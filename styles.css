@@ -1,0 +1,30 @@
+.container {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.img-container {
+    border: 0px;
+    width: 100%;
+    margin: 0 auto;
+    padding:0;
+    cursor: ew-resize;
+}
+
+.img360 {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    line-height: 0;
+}
+
+img {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#preload-imgs {
+    display:none;
+}
