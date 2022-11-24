@@ -36,30 +36,47 @@
         }
         console.log(arr);
 
+        function changeImage(collection) {
+          console.debug(`Change image to ${collection} -> ${toCollectionPath(collection)}/{index}.jpg`);
+          $('.img360').attr('data-path', `${toCollectionPath(collection)}/{index}.jpg`);
+          $('.img360').threeSixty({
+              dragDirection: 'horizontal'
+          });
+          return true;
+        }
+
+        
       });
+
+      
 
       $(document).ready(function(){
         $('.img360').threeSixty({
             dragDirection: 'horizontal'
         });
-    });
+        $(".img1").on("click", function(e) {
+          alert("Clikced");
+        });
+      });
+
+      
     </script>
   </head>
   <body>
     <div class="container">
       <div id="preloadImgs"></div>
       <div class="img-container">
-        <div class="img360" data-path="img/01/{index}.JPG" data-count="36"></div>
+        <div class="img360" data-path="img/01/{index}.jpg" data-count="36"></div>
       </div>
       <div class="navigator">
         <div>
-          <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(1)" />
+          <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" collection-id=1 id="img1" />
         </div>
         <div>
-          <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(2)" />
+          <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" collection-id=2 />
         </div>
         <div>
-          <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />
+          <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />
         </div>
         <div>
           <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />
