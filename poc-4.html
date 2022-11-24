@@ -65,7 +65,7 @@
 
         function changeImg(imgNum) {
           // spread it out so it doesn't load new img every single px of swipe distance
-          imgNum = Math.floor(imgNum / 8);
+          imgNum = Math.floor(imgNum / 8) % num;
 
           if (imgNum < 1) {
             imgNum += num;
@@ -80,7 +80,7 @@
 
         function changeImgR(imgNum) {
           // spread it out so it doesn't load new img every single px of swipe distance
-          imgNum = Math.floor(imgNum / 8);
+          imgNum = Math.floor(imgNum / 8) % num;
 
           var num2 = -Math.abs(num);
           if (imgNum > num2) {
