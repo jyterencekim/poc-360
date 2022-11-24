@@ -11,14 +11,29 @@
     <script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script>
 
     <script>
+		const IMAGE_PATH = `img`;
+
+		function pad(x) {
+			return `${String(x).padStart(2, "0")}`;
+		}
+
+		function toCollectionPath(collectionNumber) {
+			return `${IMAGE_PATH}/${pad(collectionNumber)}`;
+		}
+
+		function toCollectionImagePath(collection, image) {
+			return `${toCollectionPath(collection)}/${pad(image)}.jpg`;
+		}
+
       $(function () {
-        var collection = "01";
-        var num = 36; // the total number of images
+		const collections = 3; // how many collections there are up to
+        var collection = 1;
+        const num = 36; // the total number of images
 
         // Preload all the images into hidden div
         for (var i = 1; i <= num; i++) {
           var img = document.createElement("img");
-          img.src = `img/${collection}/${String(i).padStart(2, "0")}.jpg`;
+          img.src = toCollectionImagePath(collection, i);
           document.getElementById("preload-imgs").appendChild(img);
         }
 
@@ -35,6 +50,10 @@
           imgs = $(".img-container"); // the element that will be swipeable
           imgs.swipe(swipeOptions);
         });
+
+		$("#images img").on("click", function(e){
+			alert("your function all");
+		});
 
         function swipeStatus(event, phase, direction, distance) {
           var duration = 0;
@@ -57,9 +76,7 @@
           }
 
           // change the image src
-          document.getElementById("myImg").src = `img/${collection}/${String(
-            imgNum
-          ).padStart(2, "0")}.jpg`;
+          document.getElementById("myImg").src = toCollectionImagePath(collection, imgNum);
         }
 
         function changeImgR(imgNum) {
@@ -75,9 +92,7 @@
           }
 
           // change the image src
-          document.getElementById("myImg").src = `img/${collection}/${String(
-            imgNum
-          ).padStart(2, "0")}.jpg`;
+          document.getElementById("myImg").src = toCollectionImagePath(collection, imgNum);
         }
       });
     </script>
@@ -91,13 +106,16 @@
       </div>
       <div class="navigator">
           <div>
-            <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" />
+            <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(1)" />
           </div>
           <div>
-            <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" />
+            <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(2)" />
           </div>
 		  <div>
-			<img src="https://source.unsplash.com/VWcPlbHglYc" alt="" />
+			<img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />
+		  </div>
+		  <div>
+			<img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />
 		  </div>
 		  <div>
 			<img src="https://source.unsplash.com/VWcPlbHglYc" alt="" />
@@ -156,11 +174,6 @@
 		  <div>
 			<img src="https://source.unsplash.com/VWcPlbHglYc" alt="" />
 		  </div>
-		  <div>
-			<img src="https://source.unsplash.com/VWcPlbHglYc" alt="" />
-		  </div>
-		  
-
     </div>
   </body>
 </html>
