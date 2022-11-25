@@ -24,29 +24,29 @@ img {
 }
 
 .img-container {
-  border: 0px;
+  border: 0;
   margin: 0 auto;
   padding: 0;
   cursor: ew-resize;
 }
 
 .navigator {
-  border: 0px;
+  border: 0;
   margin: 0;
-  padding: 0px;
+  padding: 0;
   /* max-height: 100%; */
   display: grid;
-  /* align-items: center; */
+  align-items: center;
   grid-template-columns: 1fr 1fr;
   grid-auto-flow: row;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .navigator div {
-  margin: 10px 10px;
-  width: 95%;
-  height: 100%;
+  margin: 0;
+  width: 98%;
+  height: 98%;
   position: relative;
 }
 
@@ -55,7 +55,6 @@ img {
   max-width: 100%;
   object-fit: cover;
   /* vertical-align: middle; */
-  border-radius: 5px;
 }
 
 @media only screen and (orientation: landscape) {
@@ -77,6 +76,7 @@ img {
     min-width: 20%;
     max-width: 20%;
     float: right;
+    grid-template-columns: 1fr;
   }
 }
 

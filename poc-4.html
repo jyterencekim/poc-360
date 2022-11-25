@@ -25,38 +25,49 @@
       return `${toCollectionPath(collection)}/${pad(image)}.jpg`;
     }
 
-    $(function () {
-      const collections = 3; // how many collections there are up to
+    $("document").ready(function () {
+      // Only for PoC
+      const totalCollections = 40;
+      const availableCollections = 3; // how many collections there are up to
       const num = 36; // the total number of images
       var currentCollection = 1;
 
-      var arr = [];
-      for (let c = 1; c <= collections; c++) {
-        for (let i = 1; i <= num; i++) {
-          arr.push(toCollectionImagePath(c, i));
-        }
+      function setCurrentCollection(collectionNumber) {
+        console.log(`Set current collection from ${currentCollection} to ${collectionNumber}`);
+        document.getElementById("currentImage").src = toCollectionImagePath(collectionNumber, 1);
+        currentCollection = collectionNumber;
       }
 
-      // Preload all the images into hidden div
-      for (let i = 1; i <= num; i++) {
-        var img = document.createElement("img");
-        img.src = toCollectionImagePath(currentCollection, i);
-        document.getElementById("preload-imgs").appendChild(img);
+      // Preload
+      var images = [];
+      for (let x = 1; x <= totalCollections; x++) {
+        let c = x % availableCollections + 1;
+        let thumbnailCell = document.createElement("div");
+        let thumbnail = document.createElement("img");
+        thumbnail.src = toCollectionImagePath(c, 1);
+        thumbnailCell.appendChild(thumbnail);
+        thumbnailCell.onclick = () => setCurrentCollection(c);
+        document.getElementById("thumbnails").appendChild(thumbnailCell);
+
+        for (let i = 1; i <= num; i++) {
+          let path = toCollectionImagePath(c, i);
+          images.push(path);
+          let image = document.createElement("img");
+          image.src = path;
+          document.getElementById("preload-imgs").appendChild(image);
+        }
       }
 
       // Control swipes using jquery.touchSwipe.min.js
       // http://labs.rampinteractive.co.uk/touchSwipe/
-      var swipeOptions = {
+      const swipeOptions = {
         triggerOnTouchEnd: true,
         swipeStatus: swipeStatus,
         allowPageScroll: "auto",
         threshold: 75,
       };
 
-      $(function () {
-        imgs = $(".img-container");
-        imgs.swipe(swipeOptions);
-      });
+      $(".img-container").swipe(swipeOptions);
 
       function swipeStatus(event, phase, direction, distance) {
         if (direction === "left") {
@@ -77,7 +88,7 @@
         }
 
         // change the image src
-        document.getElementById("myImg").src = toCollectionImagePath(currentCollection, imgNum);
+        document.getElementById("currentImage").src = toCollectionImagePath(currentCollection, imgNum);
       }
 
       function makeRotateR(imgNum) {
@@ -93,7 +104,7 @@
         }
 
         // change the image src
-        document.getElementById("myImg").src = toCollectionImagePath(currentCollection, imgNum);
+        document.getElementById("currentImage").src = toCollectionImagePath(currentCollection, imgNum);
       }
     });
 
@@ -103,87 +114,87 @@
 <div class="container">
   <div id="preload-imgs"></div>
   <div class="img-container">
-    <div class="img360"><img id="myImg" src="img/01/01.jpg" /></div>
+    <div class="img360"><img id="currentImage" src="img/01/01.jpg" /></div>
   </div>
-  <div class="navigator">
-    <div>
-      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" collection-id=1 id="img1" />
-    </div>
-    <div>
-      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" collection-id=2 />
-    </div>
-    <div>
-      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />
-    </div>
-    <div>
-      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />
-    </div>
-    <div>
-      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />
-    </div>
-    <div>
-      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />
-    </div>
-    <div>
-      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />
-    </div>
-    <div>
-      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />
-    </div>
-    <div>
-      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />
-    </div>
-    <div>
-      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />
-    </div>
-    <div>
-      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />
-    </div>
-    <div>
-      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />
-    </div>
-    <div>
-      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />
-    </div>
-    <div>
-      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />
-    </div>
-    <div>
-      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />
-    </div>
-    <div>
-      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />
-    </div>
-    <div>
-      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />
-    </div>
-    <div>
-      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />
-    </div>
-    <div>
-      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />
-    </div>
-    <div>
-      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />
-    </div>
-    <div>
-      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />
-    </div>
-    <div>
-      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />
-    </div>
-    <div>
-      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />
-    </div>
-    <div>
-      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />
-    </div>
-    <div>
-      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />
-    </div>
-    <div>
-      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />
-    </div>
+  <div class="navigator" id="thumbnails">
+    <!--    <div>-->
+    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" collection-id=1 id="img1" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" collection-id=2 />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
+    <!--    </div>-->
   </div>
 </body>
 </html>
