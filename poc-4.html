@@ -27,15 +27,17 @@
 
     $("document").ready(function () {
       // Only for PoC
-      const threshold = 4;
+      const threshold = 36;
       const totalCollections = 40;
       const availableCollections = 3; // how many collections there are up to
       const num = 36; // the total number of images
       var currentCollection = 1;
+      var currentPos = 1;
 
       function setCurrentCollection(collectionNumber) {
         console.log(`Set current collection from ${currentCollection} to ${collectionNumber}`);
         document.getElementById("currentImage").src = toCollectionImagePath(collectionNumber, 1);
+        currentPos = 1;
         currentCollection = collectionNumber;
       }
 
@@ -70,8 +72,13 @@
 
       $(".img-container").swipe(swipeOptions);
 
+      function byChance() {
+        return false;
+        // return Math.random() < 0.6;
+      }
+
       function swipeStatus(event, phase, direction, distance) {
-        if (distance == 0){
+        if (distance == 0 || byChance()){
           return;
         }
         if (direction === "left") {
@@ -85,41 +92,23 @@
         if (distance < 0) {
           return;
         }
-        console.log(`Rotate l: ${distance}`);
-        // spread it out so it doesn't load new img every single px of swipe distance
-        distance = Math.floor(distance / threshold) % num;
-        let newPos = (num + distance) % num + 1;
-
-        if (distance < 1) {
-          distance += num;
-        }
-        if (distance > num) {
-          distance -= num;
-        }
+        console.debug(`Rotate l: ${distance} - currentPos ${currentPos}`);
+        currentPos = Math.floor(distance) % num + 1;
 
         // change the image src
-        document.getElementById("currentImage").src = toCollectionImagePath(currentCollection, newPos);
+        document.getElementById("currentImage").src = toCollectionImagePath(currentCollection, currentPos);
       }
 
       function makeRotateR(distance) {
         if (distance > 0) {
           return;
         }
-        console.log(`Rotate r: ${distance}`);
-        // spread it out so it doesn't load new img every single px of swipe distance
-        distance = Math.floor(distance / threshold) % num;
-        let newPos = (num + distance) % num + 1;
-
-        var num2 = -Math.abs(num);
-        if (distance > num2) {
-          distance += num;
+        console.debug(`Rotate r: ${distance} - currentPos ${currentPos}`);
+        currentPos = Math.floor(distance) % num + 1;
+        if (currentPos <= 0) {
+          currentPos += num;
         }
-        if (distance <= num2) {
-          distance += num * 2;
-        }
-
-        // change the image src
-        document.getElementById("currentImage").src = toCollectionImagePath(currentCollection, newPos);
+        document.getElementById("currentImage").src = toCollectionImagePath(currentCollection, currentPos);
       }
     });
 
