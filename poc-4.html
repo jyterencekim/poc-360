@@ -77,8 +77,10 @@
         if (direction !== "left" && direction !== "right") {
           return;
         }
-        if (distance == 0) {
+        if (phase === "end") {
+          console.log(`${phase} ${direction} - ${onSwipeOrigin} -> ${currentPos}`);
           onSwipeOrigin = currentPos;
+          return;
         }
         console.log(phase, direction, distance, currentDirection);
         makeRotate(direction, distance);
