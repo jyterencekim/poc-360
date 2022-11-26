@@ -93,7 +93,7 @@
           multiplier = -1;
         }
         
-        let diff = Math.floor(distance / threshold) * multiplier;
+        let diff = Math.ceil(distance / threshold) * multiplier;
         currentPos = ((onSwipeOrigin + diff) % num) + 1;
         if (currentPos <= 0) {
           currentPos += num;
