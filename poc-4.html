@@ -27,6 +27,7 @@
 
     $("document").ready(function () {
       // Only for PoC
+      const threshold = 4;
       const totalCollections = 40;
       const availableCollections = 3; // how many collections there are up to
       const num = 36; // the total number of images
@@ -70,41 +71,55 @@
       $(".img-container").swipe(swipeOptions);
 
       function swipeStatus(event, phase, direction, distance) {
+        if (distance == 0){
+          return;
+        }
         if (direction === "left") {
           makeRotate(distance);
+        } else {
+          makeRotateR(-distance);
         }
-        makeRotateR(-distance);
       }
 
-      function makeRotate(imgNum) {
-        // spread it out so it doesn't load new img every single px of swipe distance
-        imgNum = Math.floor(imgNum / 8) % num;
-
-        if (imgNum < 1) {
-          imgNum += num;
+      function makeRotate(distance) {
+        if (distance < 0) {
+          return;
         }
-        if (imgNum > num) {
-          imgNum -= num;
+        console.log(`Rotate l: ${distance}`);
+        // spread it out so it doesn't load new img every single px of swipe distance
+        distance = Math.floor(distance / threshold) % num;
+        let newPos = (num + distance) % num + 1;
+
+        if (distance < 1) {
+          distance += num;
+        }
+        if (distance > num) {
+          distance -= num;
         }
 
         // change the image src
-        document.getElementById("currentImage").src = toCollectionImagePath(currentCollection, imgNum);
+        document.getElementById("currentImage").src = toCollectionImagePath(currentCollection, newPos);
       }
 
-      function makeRotateR(imgNum) {
+      function makeRotateR(distance) {
+        if (distance > 0) {
+          return;
+        }
+        console.log(`Rotate r: ${distance}`);
         // spread it out so it doesn't load new img every single px of swipe distance
-        imgNum = Math.floor(imgNum / 8) % num;
+        distance = Math.floor(distance / threshold) % num;
+        let newPos = (num + distance) % num + 1;
 
         var num2 = -Math.abs(num);
-        if (imgNum > num2) {
-          imgNum += num;
+        if (distance > num2) {
+          distance += num;
         }
-        if (imgNum <= num2) {
-          imgNum += num * 2;
+        if (distance <= num2) {
+          distance += num * 2;
         }
 
         // change the image src
-        document.getElementById("currentImage").src = toCollectionImagePath(currentCollection, imgNum);
+        document.getElementById("currentImage").src = toCollectionImagePath(currentCollection, newPos);
       }
     });
 
@@ -117,84 +132,6 @@
     <div class="img360"><img id="currentImage" src="img/01/01.jpg" /></div>
   </div>
   <div class="navigator" id="thumbnails">
-    <!--    <div>-->
-    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" collection-id=1 id="img1" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" collection-id=2 />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img class="thumbnail" src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(3)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <img src="https://source.unsplash.com/VWcPlbHglYc" alt="" onclick="alert(4)" />-->
-    <!--    </div>-->
   </div>
 </body>
 </html>
