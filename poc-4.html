@@ -27,7 +27,7 @@
 
     $("document").ready(function () {
       // Only for PoC
-      const threshold = 5;
+      const threshold = 18;
       const totalCollections = 40;
       const availableCollections = 3; // how many collections there are up to
       const num = 36; // the total number of images
@@ -39,6 +39,7 @@
         console.log(`Set current collection from ${currentCollection} to ${collectionNumber}`);
         document.getElementById("currentImage").src = toCollectionImagePath(collectionNumber, 1);
         currentPos = 1;
+        onSwipeOrigin = 1;
         currentCollection = collectionNumber;
       }
 
