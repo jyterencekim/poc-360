@@ -27,12 +27,13 @@
 
     $("document").ready(function () {
       // Only for PoC
-      const threshold = 36;
+      const threshold = 5;
       const totalCollections = 40;
       const availableCollections = 3; // how many collections there are up to
       const num = 36; // the total number of images
       var currentCollection = 1;
       var currentPos = 1;
+      var onSwipeOrigin = 0;
 
       function setCurrentCollection(collectionNumber) {
         console.log(`Set current collection from ${currentCollection} to ${collectionNumber}`);
@@ -72,42 +73,32 @@
 
       $(".img-container").swipe(swipeOptions);
 
-      function byChance() {
-        return false;
-        // return Math.random() < 0.6;
-      }
-
-      function swipeStatus(event, phase, direction, distance) {
-        if (distance == 0 || byChance()){
+      function swipeStatus(event, phase, direction, distance, duration, fingerCount, fingerData, currentDirection) {
+        if (direction !== "left" && direction !== "right") {
           return;
         }
-        if (direction === "left") {
-          makeRotate(distance);
-        } else {
-          makeRotateR(-distance);
+        if (distance == 0) {
+          onSwipeOrigin = currentPos;
         }
+        console.log(phase, direction, distance, currentDirection);
+        makeRotate(direction, distance);
       }
 
-      function makeRotate(distance) {
-        if (distance < 0) {
-          return;
+      function makeRotate(direction, distance) {
+        let multiplier = 1;
+        if (direction == "right") {
+          multiplier = -1;
         }
-        console.debug(`Rotate l: ${distance} - currentPos ${currentPos}`);
-        currentPos = Math.floor(distance) % num + 1;
-
-        // change the image src
-        document.getElementById("currentImage").src = toCollectionImagePath(currentCollection, currentPos);
-      }
-
-      function makeRotateR(distance) {
-        if (distance > 0) {
-          return;
-        }
-        console.debug(`Rotate r: ${distance} - currentPos ${currentPos}`);
-        currentPos = Math.floor(distance) % num + 1;
+        
+        let diff = Math.floor(distance / threshold) * multiplier;
+        currentPos = ((onSwipeOrigin + diff) % num) + 1;
         if (currentPos <= 0) {
           currentPos += num;
         }
+
+        console.debug(`Rotate ${direction}: ${distance} - currentPos ${currentPos} - origin ${onSwipeOrigin}`);
+
+        // change the image src
         document.getElementById("currentImage").src = toCollectionImagePath(currentCollection, currentPos);
       }
     });
