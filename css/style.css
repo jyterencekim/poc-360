@@ -10,6 +10,7 @@ html {
   right: 0;
   top: 0;
   left: 0;
+  -webkit-overflow-scrolling: touch;
 }
 
 .container {
@@ -95,10 +96,13 @@ img {
 }
 
 @media only screen and (orientation: portrait) {
+  .container {
+    display: grid;
+    grid-template-rows: auto 1fr;
+  }
+
   .img-container {
-    float: top;
     width: 100%;
-    aspect-ratio : 1 / 1;
     margin: 0 auto;
     padding: 0;
     cursor: ew-resize;
@@ -111,10 +115,10 @@ img {
   }
 
   .navigator {
-    float: bottom;
+    width: 100%;
     padding-top: 4px;
-    min-height: 20%;
-    max-height: 55%;
+    /* min-height: 20%;
+    max-height: 55%; */
     padding-top: 4px;
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
