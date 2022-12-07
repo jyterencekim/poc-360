@@ -47,7 +47,7 @@
         document.getElementById("thumbnails").appendChild(thumbnailCell);
       }
 
-      function onLoadCollection(collectionNumber) {
+      function preloadCollection(collectionNumber) {
         console.debug(`Load collection ${collectionNumber}`);
         isReady = false;
         const preloadDiv = `preload-imgs-${collectionNumber}`;
@@ -65,7 +65,7 @@
         isReady = true;
       }
 
-      function onLeaveCollection(collectionNumber) {
+      function clearCollection(collectionNumber) {
         console.debug(`Leave collection ${collectionNumber}`);
         isReady = false;
         const preloadDiv = `#preload-imgs-${collectionNumber}`;
@@ -76,13 +76,16 @@
       for (let c = 1; c <= totalCollections; c++) {
         preloadThumbnail(c);
       }
+      for (let c = 1; c <= totalCollections; c++) {
+        preloadCollection(c); // duplicate loading for the thumbnail should be fine
+      }
 
       // Event listeners
       function setCurrentCollection(collectionNumber) {
         console.debug(`Set current collection from ${currentCollection} to ${collectionNumber}`);
-        // onLeaveCollection(currentCollection); // enable this for garbage collection
+        // clearCollection(currentCollection); // enable this for garbage collection
         document.getElementById("currentImage").src = "img/loading.gif";
-        onLoadCollection(collectionNumber);
+        // preloadCollection(collectionNumber);
         document.getElementById("currentImage").src = toCollectionImagePath(collectionNumber, 1);
         currentPos = 1;
         onSwipeOrigin = 1;
