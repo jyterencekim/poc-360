@@ -36,6 +36,18 @@
       var onSwipeOrigin = 0;
       // var isReady = true;
 
+      document.getElementById("thumbnails").style.visibility = "hidden";
+      document.getElementById("status").style.visibility = "visible";
+      for (let c = 1; c <= totalCollections; c++) {
+        preloadThumbnail(c);
+      }
+      for (let c = 1; c <= totalCollections; c++) {
+        preloadCollection(c); // duplicate loading for the thumbnail should be fine
+      }
+      document.getElementById("thumbnails").style.visibility = "visible";
+      document.getElementById("status").style.visibility = "hidden";
+      console.log("Loaded and ready");
+
       // Preload
       function preloadThumbnail(collectionNumber) {
         console.debug(`Load thumbnail ${collectionNumber}`);
@@ -71,13 +83,6 @@
         const preloadDiv = `#preload-imgs-${collectionNumber}`;
         $(preloadDiv).empty(); 
         // isReady = true;
-      }
-
-      for (let c = 1; c <= totalCollections; c++) {
-        preloadThumbnail(c);
-      }
-      for (let c = 1; c <= totalCollections; c++) {
-        preloadCollection(c); // duplicate loading for the thumbnail should be fine
       }
 
       // Event listeners
@@ -145,6 +150,7 @@
     </div>
   </div>
   <div class="navigator" id="thumbnails"></div>
+  <div id="status"><img src="img/loading.gif"/></div>
 </div>
 <div class="invisible" id="preload-imgs"></div>
 </body>
