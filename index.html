@@ -34,7 +34,7 @@
       var currentCollection = 1;
       var currentPos = 1;
       var onSwipeOrigin = 0;
-      var isReady = true;
+      // var isReady = true;
 
       // Preload
       function preloadThumbnail(collectionNumber) {
@@ -49,7 +49,7 @@
 
       function preloadCollection(collectionNumber) {
         console.debug(`Load collection ${collectionNumber}`);
-        isReady = false;
+        // isReady = false;
         const preloadDiv = `preload-imgs-${collectionNumber}`;
         let preloaded = document.getElementById(preloadDiv);
         if (!preloaded) {
@@ -62,15 +62,15 @@
               preloaded.appendChild(image);
             }
         }        
-        isReady = true;
+        // isReady = true;
       }
 
       function clearCollection(collectionNumber) {
         console.debug(`Leave collection ${collectionNumber}`);
-        isReady = false;
+        // isReady = false;
         const preloadDiv = `#preload-imgs-${collectionNumber}`;
         $(preloadDiv).empty(); 
-        isReady = true;
+        // isReady = true;
       }
 
       for (let c = 1; c <= totalCollections; c++) {
@@ -104,10 +104,6 @@
       $(".img-container").swipe(swipeOptions);
 
       function swipeStatus(event, phase, direction, distance, duration, fingerCount, fingerData, currentDirection) {
-        if (!isReady) {
-          console.debug("Still loading");
-          return;
-        }
         if (direction !== "left" && direction !== "right") {
           return;
         }
