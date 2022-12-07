@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Demo: Responsive 360 Spin with Touch or Mouse</title>
+  <title>Queer Archive: 360</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
 
@@ -25,8 +25,8 @@
       return `${toCollectionPath(collection)}/${pad(image)}.jpg`;
     }
 
+
     $("document").ready(function () {
-      // Only for PoC
       const threshold = 18;
       const totalCollections = 56;
       const availableCollections = totalCollections; 
@@ -34,33 +34,50 @@
       var currentCollection = 1;
       var currentPos = 1;
       var onSwipeOrigin = 0;
+      var isReady = false;
 
+      // Preload
+      function preloadThumbnail(collectionNumber) {
+        console.log(`Load thumbnail ${collectionNumber}`);
+        let thumbnailCell = document.createElement("div");
+        let thumbnail = document.createElement("img");
+        thumbnail.src = toCollectionImagePath(collectionNumber, 1);
+        thumbnailCell.appendChild(thumbnail);
+        thumbnailCell.onclick = () => setCurrentCollection(collectionNumber);
+        document.getElementById("thumbnails").appendChild(thumbnailCell);
+      }
+
+      function preloadCollection(collectionNumber) {
+        console.log(`Load collection ${collectionNumber}`);
+        isReady = false;
+        const preloadDiv = `preload-imgs-${collectionNumber}`;
+        let preloaded = document.getElementById(preloadDiv);
+        if (!preloaded) {
+            preloaded = document.createElement("div");
+            preloaded.classList.add("invisible");
+            for (let i = 1; i <= num; i++) {
+              let path = toCollectionImagePath(collectionNumber, i);
+              let image = document.createElement("img");
+              image.src = path;
+              preloaded.appendChild(image);
+            }
+        }        
+        isReady = true;
+      }
+
+      for (let c = 1; c <= totalCollections; c++) {
+        preloadThumbnail(c);
+      }
+
+      // Event listeners
       function setCurrentCollection(collectionNumber) {
         console.log(`Set current collection from ${currentCollection} to ${collectionNumber}`);
+        document.getElementById("currentImage").src = "img/loading.gif";
+        preloadCollection(collectionNumber);
         document.getElementById("currentImage").src = toCollectionImagePath(collectionNumber, 1);
         currentPos = 1;
         onSwipeOrigin = 1;
         currentCollection = collectionNumber;
-      }
-
-      // Preload
-      var images = [];
-      for (let x = 0; x < totalCollections; x++) {
-        let c = x % availableCollections + 1;
-        let thumbnailCell = document.createElement("div");
-        let thumbnail = document.createElement("img");
-        thumbnail.src = toCollectionImagePath(c, 1);
-        thumbnailCell.appendChild(thumbnail);
-        thumbnailCell.onclick = () => setCurrentCollection(c);
-        document.getElementById("thumbnails").appendChild(thumbnailCell);
-
-        for (let i = 1; i <= num; i++) {
-          let path = toCollectionImagePath(c, i);
-          images.push(path);
-          let image = document.createElement("img");
-          image.src = path;
-          document.getElementById("preload-imgs").appendChild(image);
-        }
       }
 
       // Control swipes using jquery.touchSwipe.min.js
@@ -75,6 +92,10 @@
       $(".img-container").swipe(swipeOptions);
 
       function swipeStatus(event, phase, direction, distance, duration, fingerCount, fingerData, currentDirection) {
+        if (!isReady) {
+          console.log("Still loading");
+          return;
+        }
         if (direction !== "left" && direction !== "right") {
           return;
         }
@@ -110,9 +131,12 @@
 </head>
 <body>
 <div class="container">
-  <div id="preload-imgs"></div>
+  <div class="invisible" id="preload-imgs"></div>
+  <div id="status">Loading...</div>
   <div class="img-container">
-    <div class="img360"><img id="currentImage" src="img/01/01.jpg" /></div>
+    <div class="img360">
+      <img id="currentImage" src="img/01/01.jpg" />
+    </div>
   </div>
   <div class="navigator" id="thumbnails">
   </div>
