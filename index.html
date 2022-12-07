@@ -27,7 +27,7 @@
 
 
     $("document").ready(function () {
-      const threshold = 18;
+      const threshold = 17;
       const totalCollections = 56;
       const availableCollections = totalCollections; 
       const num = 36; // the total number of images
@@ -38,7 +38,7 @@
 
       // Preload
       function preloadThumbnail(collectionNumber) {
-        console.log(`Load thumbnail ${collectionNumber}`);
+        console.debug(`Load thumbnail ${collectionNumber}`);
         let thumbnailCell = document.createElement("div");
         let thumbnail = document.createElement("img");
         thumbnail.src = toCollectionImagePath(collectionNumber, 1);
@@ -48,7 +48,7 @@
       }
 
       function onLoadCollection(collectionNumber) {
-        console.log(`Load collection ${collectionNumber}`);
+        console.debug(`Load collection ${collectionNumber}`);
         isReady = false;
         const preloadDiv = `preload-imgs-${collectionNumber}`;
         let preloaded = document.getElementById(preloadDiv);
@@ -66,10 +66,10 @@
       }
 
       function onLeaveCollection(collectionNumber) {
-        console.log(`Leave collection ${collectionNumber}`);
+        console.debug(`Leave collection ${collectionNumber}`);
         isReady = false;
         const preloadDiv = `#preload-imgs-${collectionNumber}`;
-        $(preloadDiv).empty();
+        $(preloadDiv).empty(); 
         isReady = true;
       }
 
@@ -79,8 +79,8 @@
 
       // Event listeners
       function setCurrentCollection(collectionNumber) {
-        console.log(`Set current collection from ${currentCollection} to ${collectionNumber}`);
-        onLeaveCollection(currentCollection);
+        console.debug(`Set current collection from ${currentCollection} to ${collectionNumber}`);
+        // onLeaveCollection(currentCollection); // enable this for garbage collection
         document.getElementById("currentImage").src = "img/loading.gif";
         onLoadCollection(collectionNumber);
         document.getElementById("currentImage").src = toCollectionImagePath(collectionNumber, 1);
@@ -95,25 +95,25 @@
         triggerOnTouchEnd: true,
         swipeStatus: swipeStatus,
         allowPageScroll: "auto",
-        threshold: 75,
+        threshold: 75
       };
 
       $(".img-container").swipe(swipeOptions);
 
       function swipeStatus(event, phase, direction, distance, duration, fingerCount, fingerData, currentDirection) {
         if (!isReady) {
-          console.log("Still loading");
+          console.debug("Still loading");
           return;
         }
         if (direction !== "left" && direction !== "right") {
           return;
         }
         if (phase === "end") {
-          console.log(`${phase} ${direction} - ${onSwipeOrigin} -> ${currentPos}`);
+          console.debug(`${phase} ${direction} - ${onSwipeOrigin} -> ${currentPos}`);
           onSwipeOrigin = currentPos;
           return;
         }
-        console.log(phase, direction, distance, currentDirection);
+        console.debug(phase, direction, distance, currentDirection);
         makeRotate(direction, distance);
       }
 
