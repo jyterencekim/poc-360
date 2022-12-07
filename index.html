@@ -34,7 +34,7 @@
       var currentCollection = 1;
       var currentPos = 1;
       var onSwipeOrigin = 0;
-      var isReady = false;
+      var isReady = true;
 
       // Preload
       function preloadThumbnail(collectionNumber) {
@@ -47,7 +47,7 @@
         document.getElementById("thumbnails").appendChild(thumbnailCell);
       }
 
-      function preloadCollection(collectionNumber) {
+      function onLoadCollection(collectionNumber) {
         console.log(`Load collection ${collectionNumber}`);
         isReady = false;
         const preloadDiv = `preload-imgs-${collectionNumber}`;
@@ -65,6 +65,14 @@
         isReady = true;
       }
 
+      function onLeaveCollection(collectionNumber) {
+        console.log(`Leave collection ${collectionNumber}`);
+        isReady = false;
+        const preloadDiv = `#preload-imgs-${collectionNumber}`;
+        $(preloadDiv).empty();
+        isReady = true;
+      }
+
       for (let c = 1; c <= totalCollections; c++) {
         preloadThumbnail(c);
       }
@@ -72,8 +80,9 @@
       // Event listeners
       function setCurrentCollection(collectionNumber) {
         console.log(`Set current collection from ${currentCollection} to ${collectionNumber}`);
+        onLeaveCollection(currentCollection);
         document.getElementById("currentImage").src = "img/loading.gif";
-        preloadCollection(collectionNumber);
+        onLoadCollection(collectionNumber);
         document.getElementById("currentImage").src = toCollectionImagePath(collectionNumber, 1);
         currentPos = 1;
         onSwipeOrigin = 1;
